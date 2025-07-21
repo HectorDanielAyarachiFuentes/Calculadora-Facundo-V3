@@ -76,9 +76,22 @@ function handleButtonClick(event) {
 }
 
 function handleKeyboardInput(event) {
+    // ======================================================
+    // === INICIO DE LA CORRECCIÓN CLAVE PARA EL MODAL ===
+    // ======================================================
+    // Si el evento se originó en un <input> o <textarea>,
+    // permitimos que el navegador maneje la entrada de texto de forma nativa
+    // y no ejecutamos la lógica de la calculadora.
+    if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+        return; // Salir de la función si estamos en un campo de texto
+    }
+    // ======================================================
+    // === FIN DE LA CORRECCIÓN CLAVE ===
+    // ======================================================
+
     const key = event.key;
     if (/[0-9+\-*/=.,cC]/.test(key) || ['Enter', 'Backspace', 'Delete', 'Escape', 'x', 'X'].includes(key)) {
-        event.preventDefault();
+        event.preventDefault(); // Esto solo se ejecutará si NO estamos en un input/textarea
     }
     if (/[0-9]/.test(key)) escribir(key);
     else if (key === '+') escribir('+');
