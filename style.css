@@ -111,7 +111,8 @@ header[role="Titulo"] {
 /* Título principal: Titillium Web (moderno, técnico) */
 header h1 {
     font-family: 'Titillium Web', sans-serif;
-    font-size: clamp(1.5rem, 6vw, 3.5rem);
+    /* MODIFICACIÓN: Reduced font size for the main title */
+    font-size: clamp(1.2rem, 2.5vw, 3.5rem); 
     font-weight: 700;
     line-height: 1;
     letter-spacing: 2px;
@@ -481,7 +482,7 @@ header .subtitle a:hover {
 
 /* --- Color del mensaje de error --- */
 .error {
-    color: white; /* Esta clase fue renombrada a .output-screen__error-message */
+    color: white; /* This class was already present, maintaining it */
 }
 
 /* ======================================================= */
@@ -825,9 +826,10 @@ header .subtitle a:hover {
         /* Evita que el header se encoja */
         flex-shrink: 0;
     }
-
+    
     header h1 {
-        font-size: 12vw !important;
+        /* MODIFICACIÓN: Reduced font size for mobile specific title */
+        font-size: 9vw !important; 
         letter-spacing: 1px !important;
     }
 
