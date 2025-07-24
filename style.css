@@ -9,11 +9,12 @@
   - Chakra Petch: Estilo digital/mecánico para botones y pantalla.
   - Titillium Web: Moderna y técnica para el título principal.
   - Outfit: Limpia y funcional para la navegación.
+  - Roboto & Roboto Mono: Para los nuevos componentes (lector de números).
 */
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Quicksand:wght@400;700&family=Outfit:wght@400;700&family=Titillium+Web:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Quicksand:wght@400;700&family=Outfit:wght@400;700&family=Titillium+Web:wght@700&family=Roboto:wght@400;700&family=Roboto+Mono&display=swap');
 
 :root {
-    /* Paleta de Colores */
+    /* Paleta de Colores de la Calculadora */
     --bg-main: #121212;
     --bg-grid-lines: rgba(200, 200, 200, 0.04);
     --bg-display: #1a1a1a;
@@ -32,7 +33,7 @@
     --color-error: #e84d4d;
     --focus-color: #66FF66;
 
-    /* Colores de Botones */
+    /* Colores de Botones de la Calculadora */
     --btn-num-bg: #FFFF66;
     --btn-op-bg: #FF3333;
     --btn-special-bg: #6666FF;
@@ -45,16 +46,23 @@
 
     /* Dimensiones */
     --nav-height: 60px;
+
+    /* Paleta de Colores del Lector de Números (debe permanecer así) */
+    --ln-color-fondo: #f8f9fa;
+    --ln-color-texto-principal: #333;
+    --ln-color-entero: #0d6efd;
+    --ln-color-decimal: #198754;
+    --ln-color-coma: #dc3545;
+    --ln-color-placeholder: #6c757d;
 }
 
 /* --- RESET Y ESTILOS BASE --- */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Aplicado globalmente para un modelo de caja consistente */
 }
 
-/* Fuente base */
 body {
     display: flex;
     justify-content: center;
@@ -64,7 +72,7 @@ body {
     background-color: var(--bg-main);
     background-image: repeating-linear-gradient(90deg, var(--bg-grid-lines) 0 1px, transparent 1px 96px), repeating-linear-gradient(0deg, var(--bg-grid-lines) 0 1px, transparent 1px 96px);
     font-family: 'Quicksand', sans-serif;
-    overflow: hidden;
+    overflow: hidden; /* Controla el desbordamiento principal */
 }
 
 button {
@@ -82,10 +90,10 @@ button:focus-visible {
 }
 
 /* ======================================================= */
-/* --- ESTRUCTURA PRINCIPAL Y COMPONENTES --- */
+/* --- ESTRUCTURA PRINCIPAL Y COMPONENTES DE LA CALCULADORA --- */
 /* ======================================================= */
 
-/* --- Contenedor Principal --- */
+/* --- Contenedor Principal de la Calculadora --- */
 .calculator-container {
     position: relative;
     width: 100%;
@@ -452,7 +460,6 @@ header .subtitle a:hover {
 }
 
 .history-panel__item.history-item-highlight {
-    /* No necesita transition, la animación se encarga de todo */
     animation: history-item-highlight 1.5s ease-out forwards;
 }
 
@@ -470,6 +477,194 @@ header .subtitle a:hover {
     font-weight: bold;
     color: var(--color-display-text);
     word-break: break-all;
+}
+
+/* --- Color del mensaje de error --- */
+.error {
+    color: white; /* Esta clase fue renombrada a .output-screen__error-message */
+}
+
+/* ======================================================= */
+/* --- COMPONENTES ADICIONALES (SIDEBAR Y MODALES) --- */
+/* ======================================================= */
+
+.sidebar-wrapper {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1050;
+}
+
+.bubble-main {
+    width: 65px;
+    height: 65px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.bubble-main[aria-expanded="true"] {
+    transform: rotate(45deg);
+}
+
+.bubble-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.bubble-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.bubble-btn i {
+    font-size: 1.5rem;
+}
+
+.bubble-sub {
+    width: 45px;
+    height: 45px;
+}
+
+.bubble-sub i {
+    font-size: 1.2rem;
+}
+
+/* ESTILOS PARA EL LECTOR DE NÚMEROS (DENTRO DEL MODAL) */
+.modal-body .input-section {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.modal-body .input-section label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.modal-body .input-section input {
+    font-family: 'Roboto Mono', monospace;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-body .card {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    color: #000;
+}
+
+.modal-body .card h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    color: var(--ln-color-texto-principal);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.75rem;
+}
+
+.modal-body .result-box {
+    padding: 1rem;
+    border-radius: 8px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--ln-color-fondo);
+    font-size: 1.2rem;
+    font-family: 'Roboto', sans-serif;
+    transition: background-color 0.3s;
+}
+
+.modal-body .placeholder-text {
+    color: var(--ln-color-placeholder);
+    font-style: italic;
+}
+
+.modal-body .phonetic-box {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 1px;
+    word-spacing: 10px;
+    flex-wrap: wrap;
+}
+
+.modal-body .phonetic-box .palabra-fonetica {
+    padding: 2px 5px;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 4px;
+}
+
+.modal-body .svg-box {
+    padding: 0;
+    background-color: transparent;
+    overflow-x: auto;
+}
+
+.modal-body .svg-box svg {
+    display: block;
+    width: 100%;
+    max-height: 250px;
+}
+
+.modal-body .svg-etiqueta-principal {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    fill: #555;
+}
+
+.modal-body .svg-etiqueta-vertical {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    fill: var(--ln-color-decimal);
+}
+
+.modal-body .svg-numero {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 5rem;
+    font-weight: 700;
+}
+
+.modal-body .highlight {
+    background-color: var(--ln-color-entero) !important;
+    color: white !important;
+    fill: white !important;
+    transition: background-color 0.1s, color 0.1s;
+}
+
+.modal-body .play-btn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    color: #333;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.modal-body .play-btn:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
 }
 
 
@@ -492,15 +687,27 @@ header .subtitle a:hover {
 
 /* Animación de hover para botones */
 @keyframes arcoiris {
-    0% { background-position: 0% 50% }
-    50% { background-position: 100% 50% }
-    100% { background-position: 0% 50% }
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
+    }
 }
 
 /* Animación de pulso consolidada (para resta, suma, etc.) */
 @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.2); opacity: 0.8; }
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
 }
 .pulse {
     animation: pulse 0.5s ease-in-out;
@@ -508,8 +715,14 @@ header .subtitle a:hover {
 
 /* Animación de entrada para celdas de suma */
 @keyframes fadeIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* Animación de resaltado para ítems del historial */
@@ -527,35 +740,16 @@ header .subtitle a:hover {
         transform: scale(1);
     }
 }
-/* Color del mensaje de error */
-
- .error {color: white;
-    }
-
-
 
 /* ======================================================= */
 /* --- MEDIA QUERIES PARA VISTAS MÓVILES (PANTALLA COMPLETA) --- */
 /* ======================================================= */
 
 @media (max-width: 600px) {
-
-    /* === Reset y base === */
-    html {
-        /* Es una buena práctica aplicar el box-sizing a todo */
-        box-sizing: border-box;
-    }
-    *, *:before, *:after {
-        box-sizing: inherit;
-    }
-
     body {
         margin: 0;
         padding: 0;
-        /* Usa min-height en lugar de height. Permite que el contenido crezca y haga scroll si es necesario. */
         min-height: 100vh;
-        /* overflow: hidden; <-- ELIMINADO. Este era el principal problema. */
-
         /* --- NUEVO: Usamos Flexbox para el layout principal --- */
         display: flex;
         flex-direction: column; /* Apila los elementos verticalmente */
@@ -568,8 +762,8 @@ header .subtitle a:hover {
         padding-left: env(safe-area-inset-left, 10px);
     }
 
-    /* === Contenedor principal === */
-    #contenedor {
+    /* === Contenedor principal de la calculadora === */
+    .calculator-container { /* Cambiado de #contenedor a .calculator-container */
         width: 100% !important;
         max-width: none !important;
         margin-bottom: 0; /* Ya no es necesario, el padding del body y flexbox lo gestionan */
@@ -582,42 +776,46 @@ header .subtitle a:hover {
     }
 
     /* === Pantalla y teclado === */
-    #cuerpoteclado {
+    .keyboard-container { /* Cambiado de #cuerpoteclado a .keyboard-container */
         width: 100% !important; /* Usar 100% en lugar de 'auto' para asegurar que ocupe el ancho del contenedor */
         height: auto !important;
-        
+
         /* --- NUEVO: Hacemos que el cuerpo del teclado ocupe el espacio restante --- */
         display: flex;
         flex-direction: column;
         flex-grow: 1; /* Esto empujará el teclado hacia abajo, ocupando el espacio disponible */
     }
 
-    #teclado {
+    .keyboard { /* Cambiado de #teclado a .keyboard */
         /* Hacemos que la grilla de botones también ocupe el espacio vertical que le da su padre */
         height: 100%;
     }
 
-    #display {
+    .display { /* Cambiado de #display a .display */
         font-size: 10vw !important;
         padding: 15px;
         /* Evita que la pantalla se encoja si el contenido es grande */
         flex-shrink: 0;
     }
 
-    #salida {
+    .output-screen { /* Cambiado de #salida a .output-screen */
         font-size: 5vw !important;
     }
 
     /* === Botones === */
-    #teclado button {
+    .keyboard__button { /* Cambiado de #teclado button a .keyboard__button */
         font-size: 6vw;
     }
 
-    #volver {
+    .bottom-nav__button--arrow { /* Cambiado de #volver a .bottom-nav__button--arrow */
         font-size: 7vw !important;
     }
 
-    #botexp, #botnor {
+    /* Los siguientes selectores no se encontraban en el CSS previo a la unificación.
+       Mantengo los estilos para asegurar que si existieran elementos con esos IDs,
+       se les apliquen estas propiedades, aunque es preferible usar clases. */
+    #botexp,
+    #botnor {
         font-size: 3.5vw !important;
         padding: 8px;
     }
@@ -627,7 +825,7 @@ header .subtitle a:hover {
         /* Evita que el header se encoja */
         flex-shrink: 0;
     }
-    
+
     header h1 {
         font-size: 12vw !important;
         letter-spacing: 1px !important;
@@ -638,103 +836,8 @@ header .subtitle a:hover {
     }
 
     /* === Mensajes de error === */
-    .error {
+    .output-screen__error-message { /* Cambiado de .error a .output-screen__error-message */
         font-size: 4.5vw !important;
         padding-top: 25%;
     }
 }
-
-        /* ESTOS ESTILOS SE APLICAN A LOS NUEVOS COMPONENTES SIN AFECTAR LA CALCULADORA */
-        :root {
-            --ln-color-fondo: #f8f9fa;
-            --ln-color-texto-principal: #333;
-            --ln-color-entero: #0d6efd;
-            --ln-color-decimal: #198754;
-            --ln-color-coma: #dc3545;
-            --ln-color-placeholder: #6c757d;
-        }
-
-        .sidebar-wrapper {
-            position: fixed; top: 20px; left: 20px; z-index: 1050;
-        }
-        .bubble-main {
-            width: 65px; height: 65px;
-        }
-        .bubble-btn {
-            width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            padding: 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); transition: all 0.2s ease;
-        }
-        .bubble-btn:hover {
-            transform: scale(1.1); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-        }
-        .bubble-btn i {
-            font-size: 1.5rem;
-        }
-        .bubble-sub {
-            width: 45px; height: 45px;
-        }
-        .bubble-sub i {
-            font-size: 1.2rem;
-        }
-        .bubble-main {
-            transition: transform 0.3s ease-in-out;
-        }
-        .bubble-main[aria-expanded="true"] {
-            transform: rotate(45deg);
-        }
-
-        /* ESTILOS PARA EL LECTOR DE NÚMEROS (DENTRO DEL MODAL) */
-        .modal-body .input-section { margin-bottom: 2rem; text-align: center; }
-        .modal-body .input-section label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 1.1rem; }
-        .modal-body .input-section input {
-            font-family: 'Roboto Mono', monospace; padding: 0.75rem; border: 1px solid #ccc;
-            border-radius: 8px; font-size: 1.5rem; width: 100%; max-width: 400px; text-align: center;
-        }
-
-        .modal-body .card {
-            background: #ffffff; padding: 1.5rem; border-radius: 12px; border: 1px solid #e0e0e0;
-            margin-bottom: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); color: #000;
-        }
-        .modal-body .card h2 {
-            margin-top: 0; margin-bottom: 1rem; font-size: 1.25rem;
-            color: var(--ln-color-texto-principal); border-bottom: 1px solid #eee; padding-bottom: 0.75rem;
-        }
-
-        .modal-body .result-box {
-            padding: 1rem; border-radius: 8px; min-height: 50px; display: flex; align-items: center;
-            justify-content: center; background-color: var(--ln-color-fondo); font-size: 1.2rem;
-            font-family: 'Roboto', sans-serif; transition: background-color 0.3s;
-        }
-        .modal-body .placeholder-text { color: var(--ln-color-placeholder); font-style: italic; }
-
-        .modal-body .phonetic-box {
-            font-family: 'Roboto Mono', monospace; font-weight: 700; letter-spacing: 1px;
-            word-spacing: 10px; flex-wrap: wrap;
-        }
-        .modal-body .phonetic-box .palabra-fonetica {
-            padding: 2px 5px; transition: background-color 0.2s, color 0.2s; border-radius: 4px;
-        }
-
-        .modal-body .svg-box { padding: 0; background-color: transparent; overflow-x: auto; }
-        .modal-body .svg-box svg { display: block; width: 100%; max-height: 250px; }
-        .modal-body .svg-etiqueta-principal {
-            font-family: 'Roboto', sans-serif; font-size: 18px; font-weight: 700;
-            text-transform: uppercase; fill: #555;
-        }
-        .modal-body .svg-etiqueta-vertical {
-            font-family: 'Roboto', sans-serif; font-size: 14px;
-            text-transform: uppercase; fill: var(--ln-color-decimal);
-        }
-        .modal-body .svg-numero { font-family: 'Roboto Mono', monospace; font-size: 5rem; font-weight: 700; }
-
-        .modal-body .highlight {
-            background-color: var(--ln-color-entero) !important; color: white !important;
-            fill: white !important; transition: background-color 0.1s, color 0.1s;
-        }
-
-        .modal-body .play-btn {
-            margin-top: 1rem; padding: 0.5rem 1rem; font-size: 1rem; border-radius: 20px;
-            border: 1px solid #ccc; background: #fff; cursor: pointer; color: #333;
-            transition: background-color 0.2s, transform 0.2s;
-        }
-        .modal-body .play-btn:hover { background-color: #f0f0f0; transform: translateY(-2px); }
