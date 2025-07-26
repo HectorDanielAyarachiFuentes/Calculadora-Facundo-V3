@@ -843,3 +843,11 @@ header .subtitle a:hover {
         padding-top: 25%;
     }
 }
+
+
+#infoModalLabel {
+  color: #040101;
+  text-align: center;
+  width: 100%;
+  left: 0;
+}
